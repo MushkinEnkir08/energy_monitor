@@ -1,0 +1,49 @@
+locations_db = {
+    "home": {
+        "name": "Моя квартира",
+        "address": "ул. Парковая, 1",
+        "devices": ["meter1", "sensor2"]
+    },
+    "office": {
+        "name": "Офис",
+        "address": "ул. Вернадского, 86",
+        "devices": ["meter3"]
+    }
+}
+
+def add_location(location_id, name, address):
+    if location_id in locations_db:
+        print(f"Ошибка: объект {location_id} уже существует")
+        return False
+    
+    locations_db[location_id] = {
+        "name": name,
+        "address": address,
+        "devices": []
+    }
+    return True
+
+def get_location(location_id):
+    return locations_db.get(location_id)
+
+def add_device(location_id, device_id):
+    location = locations_db.get(location_id)
+    if not location:
+        print(f"Ошибка: объект {location_id} не найден")
+        return False
+    
+    if device_id in location["devices"]:
+        print(f"Устройство {device_id} уже привязано")
+        return False
+    
+    location["devices"].append(device_id)
+    return True
+
+if __name__ == "__main__":
+    add_location("cottage", "Дача", "пос. Лесной, 45")
+    
+    add_device("cottage", "sensor99")
+    
+    print("Текущие объекты:")
+    for loc_id, data in locations_db.items():
+        print(f"{loc_id}: {data['name']}, устройства: {data['devices']}")
