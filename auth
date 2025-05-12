@@ -1,0 +1,33 @@
+users_db = {
+    "admin": "12345",
+    "user1": "qwerty"
+}
+
+def register(username, password):
+    if username in users_db:
+        return False, "Имя пользователя занято"
+    
+    users_db[username] = password
+    return True, "Регистрация успешна"
+
+def login(username, password):
+    if username not in users_db:
+        return False, "Пользователь не найден"
+    
+    if users_db[username] != password:
+        return False, "Неверный пароль"
+    
+    return True, "Вход выполнен"
+
+if __name__ == "__main__":
+    print("Демонстрация работы auth.py")
+    
+    success, message = register("new_user", "pass123")
+    print(f"Регистрация: {message}")
+    
+    success, message = login("new_user", "pass123")
+    print(f"Вход: {message}")
+    
+    print("\nТекущие пользователи:")
+    for user in users_db:
+        print(f"- {user}")
