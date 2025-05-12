@@ -1,0 +1,12 @@
+current_values = {}
+
+def update_value(device_id, value):
+    current_values[device_id] = value
+
+def get_all_values():
+    return current_values
+
+if __name__ == "__main__":
+    update_value("sensor-1", 15.2)
+    update_value("sensor-2", 17.8)
+    print("Текущие показания:", get_all_values())
