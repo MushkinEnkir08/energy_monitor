@@ -1,0 +1,19 @@
+logs = []
+
+def add_log(device_id, value):
+    logs.append({
+        "timestamp": "2024-05-20 14:30", 
+        "device_id": device_id,
+        "value": value
+    })
+
+def get_logs(device_id=None):
+    if device_id:
+        return [log for log in logs if log["device_id"] == device_id]
+    return logs
+
+if __name__ == "__main__":
+    add_log("sensor-1", 15.7)
+    add_log("sensor-2", 18.2)
+    print("Все логи:", get_logs())
+    print("Логи sensor-1:", get_logs("sensor-1"))
