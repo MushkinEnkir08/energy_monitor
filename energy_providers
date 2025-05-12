@@ -1,0 +1,75 @@
+from typing import List, Dict, Optional
+from pydantic import BaseModel
+from datetime import datetime
+import json
+
+class EnergyProvider(BaseModel):
+    id: str
+    name: str
+    provider_type: str  # "electricity", "gas", "water"
+    api_endpoint: Optional[str] = None  
+    is_active: bool = True
+
+class DeviceReading(BaseModel):
+    device_id: str
+    timestamp: datetime
+    value: float  # значение потребления (кВт·ч, м³ и т.д.)
+    unit: str = "kWh"
+
+_providers_db = {
+    "provider-1": EnergyProvider(
+        id="provider-1",
+        name="РосЭнергоСбыт",
+        provider_type="electricity",
+        api_endpoint="https://api.rosenergo.ru/v1/meters"
+    ),
+    "sensor-123": EnergyProvider(
+        id="sensor-123",
+        name="Умный счетчик X-2000",
+        provider_type="electricity"
+    )
+}
+
+_readings_db: List[DeviceReading] = []
+
+class EnergyProvidersService:
+    @staticmethod
+    def get_provider(provider_id: str) -> Optional[EnergyProvider]:
+        return _providers_db.get(provider_id)
+
+    @staticmethod
+    def add_reading(reading: DeviceReading) -> bool:
+        if reading.device_id not in _providers_db:
+            return False
+        _readings_db.append(reading)
+        return True
+
+    @staticmethod
+    def get_readings(device_id: str, limit: int = 100) -> List[DeviceReading]:
+        return [r for r in _readings_db if r.device_id == device_id][-limit:]
+
+class ExternalAPIService:
+    @staticmethod
+    def fetch_provider_data(provider: EnergyProvider) -> Dict:
+        if not provider.api_endpoint:
+            return {}
+        
+        mock_response = {
+            "meter_id": provider.id,
+            "current_reading": 42.7,
+            "last_updated": datetime.now().isoformat()
+        }
+        return mock_response
+
+if __name__ == "__main__":
+    print("Тест EnergyProvidersService:")
+    provider = EnergyProvidersService.get_provider("sensor-123")
+    print(f"Данные провайдера: {provider}")
+
+    reading = DeviceReading(
+        device_id="sensor-123",
+        timestamp=datetime.now(),
+        value=15.3
+    )
+    EnergyProvidersService.add_reading(reading)
+    print(f"Последние показания: {EnergyProvidersService.get_readings('sensor-123')}")
