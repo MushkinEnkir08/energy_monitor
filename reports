@@ -1,0 +1,13 @@
+def generate_report(device_id, hours=24):
+    report = f"Отчет по устройству {device_id}\n"
+    report += f"Период: последние {hours} часов\n"
+    report += "Данные:\n"
+    
+    for i in range(hours):
+        report += f"Час {i+1}: {15 + i%5} кВт·ч\n"
+    
+    report += "\nСреднее потребление: 17.3 кВт·ч/ч"
+    return report
+
+if __name__ == "__main__":
+    print(generate_report("sensor-123", 12))
