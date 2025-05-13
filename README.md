@@ -14,3 +14,65 @@
 Веб-сервер: Uvicorn
 
 Пакетный менеджер: npm
+
+Структура проекта
+Серверная часть:
+
+main.py — ядро FastAPI, объединяет модули.
+
+energy_providers/ — работа с поставщиками энергии и IoT-устройствами.
+
+locations/ — управление объектами мониторинга (дома, офисы).
+
+monitoring/ — сбор данных в реальном времени (WebSocket).
+
+reports/ — генерация отчетов в PDF/Excel.
+
+external_factors/ — учет температуры и погоды для анализа энергопотребления.
+
+Фронтенд:
+
+App.js — главный компонент React с маршрутизацией.
+
+components/ — дашборды:
+
+LiveConsumption.js — графики реального времени.
+
+HistoryChart.js — исторические данные.
+
+Alerts.js — уведомления о превышении лимитов.
+
+Инструкции по развертыванию
+Установка зависимостей:
+
+Убедитесь, что установлены Python 3.9+, Node.js 16+.
+
+Склонируйте репозиторий:
+
+bash
+git clone https://github.com/your-repo/energy-monitor.git
+Установите Python-зависимости:
+
+bash
+pip install -r requirements.txt
+Установите фронтенд-зависимости:
+
+bash
+cd frontend && npm install
+Настройка БД:
+
+Создайте базы PostgreSQL и InfluxDB (конфиг в .env).
+
+Запуск:
+
+Сервер:
+
+bash
+uvicorn main:app --reload
+Фронтенд:
+
+bash
+cd frontend && npm start
+Доступ:
+Откройте http://localhost:3000 в браузере.
+
